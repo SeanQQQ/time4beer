@@ -1,6 +1,10 @@
 const http = require('http');
 const url = require('url');
 
+
+var args = process.argv.slice(2);
+
+const PORT = args[0] ?? 8000
 const YELLOW = "\u001b[33m";
 const RESET = "\u001b[0m";
 const BEER_COLOR = "%"
@@ -25,6 +29,8 @@ const beer_art =
  
  http.createServer((req, res) => {
     
+    console.log('Got Request');
+
     //Set Up Response
     res.writeHead(200, {'Content-Type': 'text/plain; charset=UTF-8'});
     
@@ -60,8 +66,10 @@ const beer_art =
     beer_builder += '\n';
     beer_builder += beer_parts.slice(hours_until_beer, hours_until_beer+1).join('\n').replaceAll('▒', '~');
     beer_builder += '\n';
-    let beer_string = beer_builder + beer_parts.slice(hours_until_beer).join('\n')
+    let beer_string = beer_builder + beer_parts.slice(hours_until_beer+1).join('\n')
 
 
     res.end(beer_string);    
-}).listen(8000);
+}).listen(PORT);
+
+console.log(`Listening on ${PORT} 🍻`)
