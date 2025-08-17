@@ -41,7 +41,7 @@ const beer_art =
 
     //Get the current time
     const time_now = new Date();
-    const tz_time = new Date(time_now.toLocaleString('en-AU', { timeZone: tz }));
+    const tz_time = new Date(time_now.toLocaleString('en-US', { timeZone: tz }));
     const hours_now = tz_time.getHours();
 
 
