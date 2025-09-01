@@ -5,11 +5,19 @@ const url = require('url');
 var args = process.argv.slice(2);
 
 const PORT = args[0] ?? 8000
+
+// ANSI Colours
+const BLACK = "\u001b[30m";
+const RED = "\u001b[31m";
+const GREEN = "\u001b[32m";
 const YELLOW = "\u001b[33m";
+const BLUE = "\u001b[34m";
+const PURPLE = "\u001b[35m";
+const CYAN = "\u001b[36m";
+const WHITE = "\u001b[37m";
+
 const RESET = "\u001b[0m";
 const BEER_COLOR = "%"
-
-
 
 const beer_art = 
 `│${BEER_COLOR}▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒${RESET}│
@@ -26,26 +34,56 @@ const beer_art =
  │${BEER_COLOR}▒▒▒▒▒▒▒▒▒▒▒▒▒${RESET}│
  ╰─────────────╯`
  
- 
+
  http.createServer((req, res) => {
     
     console.log('Got Request');
 
     //Set Up Response
     res.writeHead(200, {'Content-Type': 'text/plain; charset=UTF-8'});
-    
     //Get Configs
     var params = url.parse(req.url, true).query;
   
     var tz = params.tz ?? 'Australia/Sydney';
+    var colour = params.colour ?? 'yellow';
+
+    let replace_colour = '';
+
+    switch (colour) {
+      case 'yellow':
+        replace_colour = YELLOW;  
+        break;
+      case 'red':
+        replace_colour = RED; 
+        break;
+      case 'blue':
+        replace_colour = BLUE;
+        break;
+      case 'purple':
+        replace_colour = PURPLE;
+        break;
+      case 'green':
+        replace_colour = GREEN;
+        break;
+      case 'cyan':
+        replace_colour = CYAN;
+        break;
+      case 'black':
+        replace_colour = BLACK;
+        break;
+      case 'white':
+        replace_colour = WHITE;
+        break;
+      default:
+        replace_colour = YELLOW;
+    }
 
     //Get the current time
     const time_now = new Date();
     const tz_time = new Date(time_now.toLocaleString('en-US', { timeZone: tz }));
     const hours_now = tz_time.getHours();
 
-
-    const beer_art_edit = beer_art.replaceAll(BEER_COLOR, YELLOW);
+    const beer_art_edit = beer_art.replaceAll(BEER_COLOR, replace_colour);
     const beer_art_with_time = beer_art_edit.replace('##:##', tz_time.toTimeString().substring(0, 5));
 
 
